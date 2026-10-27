@@ -177,7 +177,7 @@ textarea:focus{outline:2px solid #c1cdff;border-color:var(--blue)}
             <div class="field-head"><label for="sentenceA">Sentence A</label><span class="character-count" id="countA">0 / 500</span></div>
             <textarea id="sentenceA" maxlength="500" rows="3" spellcheck="true" placeholder="Enter the first sentence" required>The weather is lovely today.</textarea>
             <div class="field-head"><label for="sentenceB">Sentence B</label><span class="character-count" id="countB">0 / 500</span></div>
-            <textarea id="sentenceB" maxlength="500" rows="3" spellcheck="true" placeholder="Enter the second sentence" required>It's so sunny outside!</textarea>
+            <textarea id="sentenceB" maxlength="500" rows="3" spellcheck="true" placeholder="Enter the second sentence" required>It’s so sunny outside!</textarea>
             <div class="example-row">
               <details class="example-menu" id="exampleMenu">
                 <summary>Try an example <span aria-hidden="true">⌄</span></summary>
@@ -233,7 +233,7 @@ textarea:focus{outline:2px solid #c1cdff;border-color:var(--blue)}
           <p class="angle-caption">The angle is reconstructed from the actual sentence vectors, not a 2D projection.</p>
           <section class="heatmap-section" aria-labelledby="heatmapTitle">
             <div class="visual-head heat-title"><span id="heatmapTitle">Inside the embeddings</span><span>384 values per sentence</span></div>
-            <p class="heatmap-explainer">Each row contains 384 squares. Every square represents one number in that sentence's embedding—not an individual word or a specific meaning.</p>
+            <p class="heatmap-explainer">Each row contains 384 squares. Every square represents one number in that sentence’s embedding. The squares do not correspond to individual words or specific meanings.</p>
             <div class="heatmap-block"><span class="heat-label">A</span><canvas id="heatmapA" width="672" height="84" role="img" aria-label="Heatmap of 384 embedding values for sentence A"></canvas></div>
             <div class="heatmap-block"><span class="heat-label">B</span><canvas id="heatmapB" width="672" height="84" role="img" aria-label="Heatmap of 384 embedding values for sentence B"></canvas></div>
             <div class="heatmap-foot" aria-label="Heatmap colours explained">
@@ -283,17 +283,25 @@ textarea:focus{outline:2px solid #c1cdff;border-color:var(--blue)}
             <p>The model compares the directions of the two embeddings using <em>cosine similarity</em>. When their directions are very close, the score approaches +1. At a right angle, it is 0. For opposite directions, it is −1.</p>
           </article>
           <article class="science-card">
-            <svg class="science-illustration" viewBox="0 0 320 105" role="img" aria-label="Illustration: I agree versus I do not agree; one small word changes the meaning.">
-              <rect x="8" y="11" width="304" height="36" rx="9" fill="#f3f6ff" stroke="#d4ddf0"/>
-              <text x="24" y="35" font-size="15" fill="#25324f">I agree.</text>
-              <rect x="8" y="58" width="304" height="36" rx="9" fill="#fff6f0" stroke="#eed6c9"/>
-              <text x="24" y="82" font-size="15" fill="#25324f">I do</text>
-              <rect x="57" y="66" width="28" height="19" rx="4" fill="#f5c5ab"/>
-              <text x="62" y="82" font-size="15" font-weight="700" fill="#74422f">not</text>
-              <text x="92" y="82" font-size="15" fill="#25324f">agree.</text>
+            <svg class="science-illustration" viewBox="0 0 320 105" role="img" aria-label="Conceptual similarity scale. Higher scores suggest closer model representations. This drawing is not a calculated result.">
+              <text x="18" y="25" fill="#4b5670" font-size="12" font-family="Arial, Helvetica, sans-serif">A similarity score</text>
+              <defs>
+                <linearGradient id="illustrationSimilarityScale" x1="0%" x2="100%" y1="0%" y2="0%">
+                  <stop offset="0%" stop-color="#e7c8de"/>
+                  <stop offset="50%" stop-color="#e7eaf2"/>
+                  <stop offset="100%" stop-color="#a6dec9"/>
+                </linearGradient>
+              </defs>
+              <rect x="19" y="41" width="282" height="11" rx="5.5" fill="url(#illustrationSimilarityScale)"/>
+              <line x1="160" y1="35" x2="160" y2="57" stroke="#8492a9" stroke-width="1.5"/>
+              <circle cx="222" cy="46.5" r="8.5" fill="#365ce6" stroke="#ffffff" stroke-width="2.5"/>
+              <text x="19" y="72" fill="#63728c" font-size="11" font-family="Arial, Helvetica, sans-serif">−1</text>
+              <text x="160" y="72" fill="#63728c" text-anchor="middle" font-size="11" font-family="Arial, Helvetica, sans-serif">0</text>
+              <text x="301" y="72" fill="#63728c" text-anchor="end" font-size="11" font-family="Arial, Helvetica, sans-serif">+1</text>
+              <text x="160" y="95" fill="#4b5670" text-anchor="middle" font-size="12" font-family="Arial, Helvetica, sans-serif">A clue, not a final answer</text>
             </svg>
-            <h3>But does a high score mean the sentences mean the same thing?</h3>
-            <p>Not necessarily! Even one small word, such as <em>not</em>, can completely change what a sentence means. The model may still consider the sentences quite similar. That's why the score is a useful clue, rather than a final answer.</p>
+            <h3>What does the score actually tell us?</h3>
+            <p>A higher score suggests that the model sees a closer relationship between the two sentences. But a high score doesn’t necessarily mean they express exactly the same meaning. Think of it as a useful clue, rather than a definitive answer.</p>
           </article>
         </div>
         <p class="science-diagram-note">Illustrations simplify the ideas. The live score, vectors and heatmap above are calculated from your own sentences.</p>
@@ -1621,7 +1629,7 @@ const $ = (id) => document.getElementById(id);
 const MODEL = 'Xenova/all-MiniLM-L6-v2';
 const LIB = 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1';
 const EXAMPLES = {
-  sunny: ['The weather is lovely today.', "It's so sunny outside!"],
+  sunny: ['The weather is lovely today.', "It’s so sunny outside!"],
   cat: ['The cat sits outside.', 'A feline is outdoors.'],
   pasta: ['I love pasta.', 'The movie was great.']
 };
