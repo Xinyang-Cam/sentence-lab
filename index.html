@@ -204,7 +204,7 @@ textarea:focus{outline:2px solid #c1cdff;border-color:var(--blue)}
                 <summary>Try an example <span aria-hidden="true">⌄</span></summary>
                 <div class="example-options" role="group" aria-label="Example sentence pairs">
                   <button type="button" data-pair="sunny">☀️ Sunny Day</button>
-                  <button type="button" data-pair="dog">🐕 Dog &amp; Dachshund</button>
+                  <button type="button" data-pair="cat">🐈 Cat &amp; Feline</button>
                   <button type="button" data-pair="pasta">🍝 Pasta &amp; Movies</button>
                 </div>
               </details>
@@ -1668,7 +1668,7 @@ const MODEL = 'Xenova/all-MiniLM-L6-v2';
 const LIB = 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1';
 const EXAMPLES = {
   sunny: ['The weather is lovely today.', "It’s so sunny outside!"],
-  dog: ['A dog is running in the park.', 'A dachshund is running in the park.'],
+  cat: ['The cat sits outside.', 'A feline is outdoors.'],
   pasta: ['I love pasta.', 'The movie was great.']
 };
 let extractor = null, extractorPromise = null, lastVectors = null, animationFrame = null;
