@@ -61,6 +61,39 @@ button:focus-visible,a:focus-visible,textarea:focus-visible,summary:focus-visibl
 @media(max-width:850px){.site-wrap{padding:0 17px}.hero{padding:25px 0 18px}.hero h1{font-size:clamp(28px,5vw,41px)}.workspace{grid-template-columns:1fr}.panel{padding:17px}.vector-graphic{max-height:220px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
+
+.example-menu{position:relative;display:inline-block}.example-toggle{display:block;cursor:pointer;list-style:none;background:white;border:1.5px solid #24325a;color:#24325a;border-radius:8px;font-size:12px;font-weight:800;padding:8px 12px;box-shadow:2px 2px 0 #24325a}
+.example-toggle::marker{content:''}.example-toggle::-webkit-details-marker{display:none}
+.example-options{position:absolute;left:0;top:calc(100% + 8px);width:215px;z-index:8;background:white;border:2px solid #24325a;border-radius:9px;padding:6px;box-shadow:4px 4px 0 #24325a}
+.example-options button{border:0;background:white;color:#24325a;display:block;text-align:left;border-radius:5px;padding:9px 8px;width:100%;font-size:12px;font-weight:700}.example-options button:hover,.example-options button:focus-visible{background:#e7edff}
+.progress-track.indeterminate>div{width:28%!important;animation:moveBar 1.2s infinite ease-in-out}
+@keyframes moveBar{0%{transform:translateX(0)}50%{transform:translateX(260%)}100%{transform:translateX(0)}}
+.mini-machine{display:flex;align-items:center;gap:5px;padding:7px 0 0 17px;font:800 9px var(--display);color:#365ce6;letter-spacing:.5px}
+.mini-machine i{width:10px;height:10px;border:1px solid #24325a;background:#365ce6;animation:blinkPixel .8s steps(2,end) infinite}
+.mini-machine i:nth-child(2){background:#ffda69;animation-delay:.15s}.mini-machine i:nth-child(3){background:#f68a60;animation-delay:.3s}
+@keyframes blinkPixel{50%{opacity:.28}}
+.angle-caption{font-size:10px;line-height:1.4;color:#62718c;margin:8px 0 4px}
+.challenge{border:1.5px solid #24325a;border-radius:8px;background:#ffda69;padding:9px 11px;margin:9px 0;font-size:11px}
+.challenge strong,.challenge span{display:block}.challenge strong{font-size:12px}
+.heat-toggle{margin-top:11px;color:#365ce6;font-size:12px}.heat-toggle>summary{font-weight:800;cursor:pointer}.heat-toggle .heat-title{margin-top:9px}.heatmap-block{display:flex;gap:8px;align-items:center;margin:8px 0}
+.heatmap-block canvas{display:block;min-width:0;width:calc(100% - 30px);max-height:65px}
+.science-section{margin:18px 0}.science-trigger{display:flex;align-items:center;gap:13px;padding:15px;cursor:pointer;list-style:none}
+.science-trigger::-webkit-details-marker{display:none}.science-trigger::marker{content:''}
+.science-trigger strong{font-size:14px;color:#24325a}.science-trigger b{margin-left:auto;color:#365ce6;font-size:19px}
+.science-section[open] .science-trigger b{transform:rotate(45deg)}
+.science-inside{padding:0 16px 16px;border-top:1px solid #cbd6e8}.science-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+.science-grid article{border:1px solid #c4d0e5;border-radius:10px;background:#f4f7ff;padding:12px}
+.science-grid h3{font-size:12px;margin:6px 0}.science-grid p{font-size:11px;color:#4c5e7c;margin:0;line-height:1.55}
+.science-art{font:800 18px var(--display);display:flex;align-items:center;gap:4px;min-height:27px}
+.science-art i{width:10px;height:10px;display:inline-block;border:1px solid #24325a;background:#74e2b5}
+.science-art i:nth-child(even){background:#f68a60}.science-takeaway{font-size:12px;color:#4c5e7c;margin:14px 0 0}
+.science-takeaway strong{color:#365ce6}.footer strong{color:#24325a}.footer a{color:#365ce6}
+.references{width:100%;font-size:11px}.references summary{color:#365ce6;cursor:pointer;font-weight:800}
+.references ol{margin:7px 0;padding-left:25px}.references li{line-height:1.5;margin:7px 0;overflow-wrap:anywhere}
+[hidden]{display:none!important}
+@media(max-width:850px){.science-grid{grid-template-columns:1fr}.science-trigger{align-items:flex-start;flex-wrap:wrap}}
+@media(prefers-reduced-motion:reduce){.mini-machine i,.progress-track.indeterminate>div{animation:none!important}}
+
 </style>
 </head>
 <body>
@@ -1458,20 +1491,13 @@ const $ = (id) => document.getElementById(id);
 const MODEL = 'Xenova/all-MiniLM-L6-v2';
 const LIB = 'https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.8.1';
 const EXAMPLES = {
-  paraphrase: [
-    'My experiences helped me become a more confident writer.',
-    'These experiences strengthened my confidence in writing.'
-  ],
-  negation: [
-    'The results suggest that feedback improves student learning.',
-    'The results do not suggest that feedback improves student learning.'
-  ],
-  topic: [
-    'The language workshop helped students develop clearer arguments.',
-    'The train arrived at the station just after midnight.'
-  ],
+  sunny: ['The weather is lovely today.', "It's so sunny outside!"],
+  cat: ['The cat sits outside.', 'A feline is outdoors.'],
+  pasta: ['I love pasta.', 'The movie was great.']
 };
 let extractor = null, extractorPromise = null, lastVectors = null, animationFrame = null;
+let editRevision = 0, working = false;
+const SHARE_URL = 'https://xinyang-cam.github.io/sentence-lab/';
 const inputA = $('sentenceA'), inputB = $('sentenceB');
 
 function updateCounts() {
@@ -1492,6 +1518,8 @@ function resetResult(message = 'Your similarity score will appear here.') {
   $('vectorLines').style.opacity = '.25';
   $('vectorLabels').style.opacity = '.25';
   lastVectors = null;
+  $('challengePrompt').hidden = true;
+  if (animationFrame) cancelAnimationFrame(animationFrame);
   for (const id of ['heatmapA', 'heatmapB']) drawHeatmap($(id), null);
   $('dimensionDetail').textContent = 'A fingerprint of 384 learned values for each sentence.';
 }
@@ -1499,12 +1527,14 @@ function progress(data) {
   if (!data || typeof data !== 'object') return;
   if (data.status === 'progress' && Number.isFinite(data.progress)) {
     $('progressTrack').hidden = false;
+    $('progressTrack').classList.remove('indeterminate');
     const fraction = Math.max(0, Math.min(100, data.progress));
     $('progressFill').style.width = `${fraction}%`;
-    status('Downloading model', `${Math.round(fraction)}% of ${data.file || 'current resource'}`, 'LOADING', 'loading');
+    status('Getting the meaning machine ready...', Math.round(fraction) + '% of ' + (data.file || 'one model resource') + ' downloaded', 'LOADING', 'loading');
   } else if (data.status === 'initiate' || data.status === 'download') {
     $('progressTrack').hidden = false;
-    status('Preparing language model', 'First run downloads a ~23 MB model and supporting files.', 'LOADING', 'loading');
+    $('progressTrack').classList.add('indeterminate');
+    status('Getting the meaning machine ready...', 'First use downloads roughly 23 MB of model weights plus supporting files.', 'LOADING', 'loading');
   } else if (data.status === 'ready') {
     status('Model loaded', 'All inference stays in this browser tab.', 'ONLINE', 'ready');
   }
@@ -1513,9 +1543,10 @@ async function getExtractor() {
   if (extractor) return extractor;
   if (!extractorPromise) {
     extractorPromise = (async () => {
-      status('Loading inference engine', 'Connecting to the model library…', 'LOADING', 'loading');
+      status('Getting the meaning machine ready...', 'Preparing the model locally on your device.', 'LOADING', 'loading');
       $('progressTrack').hidden = false;
-      $('progressFill').style.width = '3%';
+      $('progressFill').style.width = '0%';
+      $('progressTrack').classList.add('indeterminate');
       const { pipeline, env } = await import(LIB);
       env.allowLocalModels = false;
       env.useBrowserCache = true;
@@ -1526,6 +1557,7 @@ async function getExtractor() {
       });
       extractor = model;
       $('progressTrack').hidden = true;
+      $('progressTrack').classList.remove('indeterminate');
       status('Model loaded', 'Ready for more sentences. Runs on your device.', 'READY', 'ready');
       return model;
     })().catch((error) => { extractorPromise = null; throw error; });
@@ -1543,44 +1575,57 @@ function extractVectors(output) {
 }
 async function calculate(evt) {
   evt.preventDefault();
-  const a = inputA.value.trim(), b = inputB.value.trim();
-  if (!a || !b) {
-    status('Two sentences needed', 'Enter both sentences to compare their embeddings.', 'CHECK INPUT', 'error');
-    return;
+  if(working) return;
+  const a=inputA.value.trim(), b=inputB.value.trim();
+  if(!a || !b) {
+    status('Two sentences needed','Please enter two sentences to compare.','CHECK INPUT','error');
+    (!a ? inputA : inputB).focus();return;
   }
-  const button = $('calculateBtn');
-  button.disabled = true; button.classList.add('is-busy');
-  $('buttonText').textContent = 'Mapping your sentences…';
+  const startRevision=editRevision, button=$('calculateBtn');
+  working=true;button.disabled=true;button.classList.add('is-busy');
+  $('buttonText').textContent='Turning words into numbers…';
+  $('machineLoader').hidden=false;
+  resetResult('The meaning machine is working…');
   try {
-    const model = await getExtractor();
-    status('Calculating embeddings', 'Encoding two texts into 384-dimensional vectors…', 'WORKING', 'loading');
-    const output = await model([a, b], { pooling: 'mean', normalize: true });
-    const [vectorA, vectorB] = extractVectors(output);
-    const score = cosineSimilarity(vectorA, vectorB);
-    renderResult(score, vectorA, vectorB);
-    status('Calculation complete', 'You can change either sentence and compare again.', 'READY', 'ready');
+    const model=await getExtractor();
+    status('Turning words into numbers...', 'Generating two 384-number embeddings locally.', 'WORKING','loading');
+    const output=await model([a,b],{pooling:'mean',normalize:true});
+    const [vectorA,vectorB]=extractVectors(output);
+    const score=cosineSimilarity(vectorA,vectorB);
+    if(startRevision!==editRevision || a!==inputA.value.trim() || b!==inputB.value.trim()) {
+      status('Sentences changed','Old calculation discarded. Compare your new sentences.','TRY AGAIN');
+      return;
+    }
+    status('Comparing the patterns...','Calculating the angle between your two embeddings.','WORKING','loading');
+    renderResult(score,vectorA,vectorB);
+    $('challengePrompt').hidden=false;
+    status('Calculation complete!', 'Change one word and try again.', 'READY','ready');
   } catch(err) {
-    console.error('Sentence Lab model error:', err);
-    const reason = navigator.onLine === false ? 'You appear to be offline.' : 'Could not load or run the model.';
-    status('Model unavailable', `${reason} Check your connection, then try again.`, 'RETRY', 'error');
-    $('progressTrack').hidden = true;
-    $('scoreInterpretation').textContent = 'No score calculated. Please retry on a reliable connection.';
+    console.error('Meaning Lab model error:',err);
+    const reason=navigator.onLine===false?'Your device appears offline.':'Unable to load or run the model.';
+    status('Model unavailable',reason+' Check the internet connection and retry.','RETRY','error');
+    $('scoreInterpretation').textContent='No score calculated. Please try again.';
   } finally {
-    button.disabled = false; button.classList.remove('is-busy');
-    $('buttonText').textContent = 'Calculate similarity';
+    $('progressTrack').hidden=true;
+    $('progressTrack').classList.remove('indeterminate');
+    $('machineLoader').hidden=true;
+    button.disabled=false;button.classList.remove('is-busy');
+    $('buttonText').textContent='Calculate similarity';
+    working=false;
   }
 }
 function animateScore(target) {
-  if (animationFrame) cancelAnimationFrame(animationFrame);
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    $('scoreValue').textContent = target.toFixed(3); return;
+  if(animationFrame) cancelAnimationFrame(animationFrame);
+  const format = value => (Object.is(value,-0) ? 0 : value).toFixed(4).replace(/^-/,'−');
+  if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    $('scoreValue').textContent=format(target);return;
   }
-  const start = performance.now(), duration=660;
-  const draw = (now) => {
-    const t = Math.min(1, (now - start)/duration);
-    const eased = 1-Math.pow(1-t,3);
-    $('scoreValue').textContent = (target*eased).toFixed(3);
-    if (t < 1) animationFrame=requestAnimationFrame(draw);
+  const start=performance.now(), duration=420;
+  const draw=now=>{
+    const t=Math.min(1,(now-start)/duration), eased=1-Math.pow(1-t,3);
+    $('scoreValue').textContent=format(target*eased);
+    if(t<1)animationFrame=requestAnimationFrame(draw);
+    else $('scoreValue').textContent=format(target);
   };
   animationFrame=requestAnimationFrame(draw);
 }
@@ -1593,11 +1638,11 @@ function renderResult(score, a, b) {
   $('scaleMarker').style.left=`${Math.max(.4,Math.min(99.6,value))}%`;
   $('scaleMarker').hidden=false;
   if (score > .80) {
-    $('scoreInterpretation').textContent='These sentences are close in the model’s semantic space. Check whether nuance or stance has changed.';
+    $('scoreInterpretation').textContent='The model sees a strong connection. But check if the sentences still mean the same thing.';
   } else if (score > .55) {
-    $('scoreInterpretation').textContent='The model detects some shared meaning, alongside noticeable differences in their embeddings.';
+    $('scoreInterpretation').textContent='The model finds some similarities, but also some differences.';
   } else {
-    $('scoreInterpretation').textContent='The model places these sentences further apart in semantic space. Examine what changed.';
+    $('scoreInterpretation').textContent='The model places these sentences further apart. The score is a clue, not a final answer.';
   }
   renderVectors(angle);
   drawHeatmap($('heatmapA'), a);
@@ -1618,14 +1663,14 @@ function renderVectors(degrees) {
   if(theta > .02) {
     const r=40, endx=ox+r*Math.sin(theta), endy=oy-r*Math.cos(theta);
     const d=`M ${ox} ${oy-r} A ${r} ${r} 0 ${theta>Math.PI?1:0} 1 ${endx} ${endy}`;
-    lines.append(svgNode('path',{d,stroke:'#f6e9be','stroke-width':'1.7','stroke-dasharray':'3 4',fill:'none',opacity:'.9'}));
+    lines.append(svgNode('path',{d,stroke:'#8e6bcb','stroke-width':'1.7','stroke-dasharray':'3 4',fill:'none',opacity:'.9'}));
   }
   lines.append(
-    svgNode('line',{x1:ox,y1:oy,x2:ox,y2:oy-length,stroke:'#82f4df','stroke-width':3,'marker-end':'url(#tipA)'}),
-    svgNode('line',{x1:ox,y1:oy,x2:bx,y2:by,stroke:'#d7a6fc','stroke-width':3,'marker-end':'url(#tipB)'})
+    svgNode('line',{x1:ox,y1:oy,x2:ox,y2:oy-length,stroke:'#365ce6','stroke-width':3,'marker-end':'url(#tipA)'}),
+    svgNode('line',{x1:ox,y1:oy,x2:bx,y2:by,stroke:'#f68a60','stroke-width':3,'marker-end':'url(#tipB)'})
   );
-  const labelA=svgNode('text',{x:ox-22,y:oy-length-7,fill:'#82f4df','font-size':13,'font-family':'DM Mono'}); labelA.textContent='A';
-  const labelB=svgNode('text',{x:bx+12,y:by+(theta<.12?-5:4),fill:'#d7a6fc','font-size':13,'font-family':'DM Mono'}); labelB.textContent='B';
+  const labelA=svgNode('text',{x:ox-22,y:oy-length-7,fill:'#365ce6','font-size':13,'font-family':'DM Sans'}); labelA.textContent='A';
+  const labelB=svgNode('text',{x:bx+12,y:by+(theta<.12?-5:4),fill:'#c35c38','font-size':13,'font-family':'DM Sans'}); labelB.textContent='B';
   labels.append(labelA,labelB);
   lines.style.opacity='1'; labels.style.opacity='1';
 }
@@ -1640,18 +1685,19 @@ function drawHeatmap(canvas, vector) {
     if(vector) {
       const n=Math.max(-.23,Math.min(.23,vector[i]));
       const alpha=(.20+.80*Math.min(1,Math.abs(n)/.16)).toFixed(2);
-      colr=n>=0?`rgba(115,239,218,${alpha})`:`rgba(215,158,247,${alpha})`;
-    } else colr=(i+row)%5===0?'#273b48':'#1b2d38';
+      colr=n>=0?`rgba(54,92,230,${alpha})`:`rgba(246,138,96,${alpha})`;
+    } else colr=(i+row)%5===0?'#d4deef':'#edf1f7';
     ctx.fillStyle=colr;
     ctx.fillRect(col*cellW+1,row*cellH+1,cellW-2,cellH-2);
   }
 }
 
 function sample(pair) {
-  const [a,b]=EXAMPLES[pair];
-  inputA.value=a; inputB.value=b;
-  document.querySelectorAll('[data-pair]').forEach(b=>b.classList.toggle('active',b.dataset.pair===pair));
-  updateCounts();resetResult();
+  if(!EXAMPLES[pair])return;
+  const [a,b]=EXAMPLES[pair];inputA.value=a;inputB.value=b;
+  editRevision++;updateCounts();resetResult();
+  $('exampleMenu').open=false;
+  status('Example loaded','You can edit either sentence. Press Calculate when ready.','READY');
 }
 function qrMatrix(url) {
   if(!window.SemanticLabQR) throw new Error('QR encoder not available.');
@@ -1672,17 +1718,13 @@ function drawQR(canvas, matrix, x,y,size, fg='#10202b', bg='#ffffff') {
   }
 }
 function openShare() {
-  const url = normalizePageURL(window.location);
-  const hosted = window.location.protocol === 'https:' || window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
-  $('pageURL').textContent=url;
-  $('qrNotice').textContent = window.location.hostname === 'localhost' || window.location.hostname==='127.0.0.1' || !hosted ?
-    'Preview address only. Publish the site before printing this QR on your poster.' :
-    'QR points to this published webpage. Ready to print.';
-  $('downloadQR').disabled = !hosted || ['localhost','127.0.0.1'].includes(window.location.hostname);
+  $('pageURL').textContent=SHARE_URL;
+  $('qrNotice').textContent='Scan to open Meaning Lab. Your typed sentences are not shared.';
+  $('downloadQR').disabled=false;
   try {
-    const q=qrMatrix(url), c=document.createElement('canvas');
+    const qr=qrMatrix(SHARE_URL),c=document.createElement('canvas');
     c.width=440;c.height=440;c.className='qr-canvas';
-    drawQR(c,q,0,0,440);
+    drawQR(c,qr,0,0,440);
     $('qrFrame').replaceChildren(c);
   } catch(e) {
     $('qrFrame').textContent='QR unavailable: '+e.message;
@@ -1691,31 +1733,44 @@ function openShare() {
   $('shareDialog').showModal();
 }
 function downloadPosterQR() {
-  const url=normalizePageURL(window.location), qr=qrMatrix(url);
-  const canvas=document.createElement('canvas');canvas.width=1080;canvas.height=1350;
-  const ctx=canvas.getContext('2d');
-  ctx.fillStyle='#f6f7f2';ctx.fillRect(0,0,1080,1350);
-  ctx.fillStyle='#0b1c25';ctx.font='600 46px sans-serif';ctx.fillText('MEANING LAB',88,112);
-  ctx.fillStyle='#52717c';ctx.font='500 23px monospace';ctx.fillText('CAMBRIDGE LANGUAGE SCIENCES SYMPOSIUM 2026',88,158);
-  ctx.fillStyle='#0b1c25';ctx.font='700 72px sans-serif';ctx.fillText('Same words?',88,276);ctx.fillText('Same meaning?',88,360);
-  drawQR(canvas,qr,145,433,790);
-  ctx.fillStyle='#0b1c25';ctx.font='600 36px sans-serif';ctx.textAlign='center';ctx.fillText('SCAN TO EXPLORE',540,1295);
-  ctx.textAlign='start';
-  const link=document.createElement('a');link.download='sentence-lab-poster-qr.png';link.href=canvas.toDataURL('image/png');link.click();
+  const qr=qrMatrix(SHARE_URL),c=document.createElement('canvas');
+  c.width=1000;c.height=1200;
+  const ctx=c.getContext('2d');
+  ctx.fillStyle='#FFF8E8';ctx.fillRect(0,0,1000,1200);
+  ctx.fillStyle='#24325A';ctx.font='bold 46px sans-serif';
+  ctx.fillText('✦ MEANING LAB',75,105);
+  ctx.font='bold 54px sans-serif';
+  ctx.fillText('Two sentences.',75,205);
+  ctx.fillText('How close are',75,270);
+  ctx.fillText('their meanings?',75,335);
+  ctx.fillStyle='#74E2B5';ctx.fillRect(75,355,390,11);
+  drawQR(c,qr,175,390,650,'#24325A','#FFFFFF');
+  ctx.fillStyle='#24325A';ctx.textAlign='center';ctx.font='bold 32px sans-serif';
+  ctx.fillText('SCAN & GIVE IT A GO!',500,1099);
+  ctx.font='20px sans-serif';ctx.fillText('xinyang-cam.github.io/sentence-lab/',500,1145);
+  const a=document.createElement('a');
+  a.download='meaning-lab-qr.png';a.href=c.toDataURL('image/png');a.click();
 }
-
-$('compareForm').addEventListener('submit', calculate);
-inputA.addEventListener('input', () => {updateCounts(); document.querySelectorAll('[data-pair]').forEach(b=>b.classList.remove('active'));});
-inputB.addEventListener('input', () => {updateCounts(); document.querySelectorAll('[data-pair]').forEach(b=>b.classList.remove('active'));});
-document.querySelectorAll('[data-pair]').forEach(b => b.addEventListener('click', ()=>sample(b.dataset.pair)));
-$('shareTop').addEventListener('click', openShare);
-$('shareBottom').addEventListener('click', openShare);
-$('copyURL').addEventListener('click', async () => {
-  try { await navigator.clipboard.writeText(normalizePageURL(window.location)); $('copyURL').textContent='Copied ✓'; setTimeout(()=>$('copyURL').textContent='Copy link',1700); }
-  catch { $('copyURL').textContent='Copy manually above'; }
+$('compareForm').addEventListener('submit',calculate);
+for(const input of [inputA,inputB]) input.addEventListener('input',()=>{
+  editRevision++;updateCounts();resetResult();
+  if(!working)status('Ready to calculate','Your sentences changed. Compare them again.','READY');
+});
+document.querySelectorAll('[data-pair]').forEach(b=>b.addEventListener('click',()=>sample(b.dataset.pair)));
+document.addEventListener('click',e=>{
+  const menu=$('exampleMenu');if(menu.open&&!menu.contains(e.target))menu.open=false;
+});
+$('shareTop').addEventListener('click',openShare);
+$('copyURL').addEventListener('click',async()=>{
+  try {
+    await navigator.clipboard.writeText(SHARE_URL);
+    $('copyURL').textContent='Copied ✓';
+    setTimeout(()=>{$('copyURL').textContent='Copy link';},1600);
+  } catch { $('copyURL').textContent='Select the link above'; }
 });
 $('downloadQR').addEventListener('click',downloadPosterQR);
 $('shareDialog').addEventListener('click',e=>{if(e.target===$('shareDialog'))$('shareDialog').close();});
+
 updateCounts();resetResult();
 
 </script>
