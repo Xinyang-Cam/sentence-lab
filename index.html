@@ -69,122 +69,92 @@ button:focus-visible,a:focus-visible,textarea:focus-visible,summary:focus-visibl
   <div class="grain" aria-hidden="true"></div>
   <div class="site-wrap">
     <header class="topbar">
-      <a class="identity" href="#top" aria-label="Sentence Lab, home">
+      <a class="identity" href="#top" aria-label="Meaning Lab, home">
         <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
         <span>SENTENCE<span class="logo-light">/LAB</span></span>
       </a>
-      <nav class="topnav" aria-label="Main navigation">
-        <a href="#the-science">The science</a>
-        <a href="#the-research">The research</a>
-        <button class="nav-share" type="button" id="shareTop"><span aria-hidden="true">↗</span> Share experiment</button>
-      </nav>
+      <nav class="topnav" aria-label="Sharing"><button class="nav-share" type="button" id="shareTop">Share Experiment ↗</button></nav>
     </header>
 
     <main id="top">
       <section class="hero" aria-labelledby="heroTitle">
-        <div class="eyebrow"><span class="signal-dot"></span> CAMBRIDGE LANGUAGE SCIENCES SYMPOSIUM <span class="eyebrow-year">/ 2026</span></div>
-        <h1 id="heroTitle">Same words?<br /><span class="hero-accent">Same meaning?</span></h1>
-        <div class="hero-bottom">
-          <p>Two sentences. 384 dimensions. One question:<br /><strong>how close are their meanings?</strong></p>
-          <div class="hero-stats" aria-label="Experiment specifications">
-            <div><strong>384</strong><span>DIMENSIONS</span></div>
-            <span class="stat-rule" aria-hidden="true"></span>
-            <div><strong>01</strong><span>SIMILARITY SCORE</span></div>
-            <span class="stat-rule" aria-hidden="true"></span>
-            <div><strong>∞</strong><span>POSSIBLE PAIRS</span></div>
-          </div>
-        </div>
-      </section>
+<h1 id="heroTitle">Two sentences.<br><span class="hero-accent">How close are their meanings?</span></h1>
+<div class="hero-bottom"><p>Can a machine tell how similar two sentences are? Type two sentences and find out!</p></div>
+</section>
 
       <section class="workspace" aria-label="Interactive similarity comparison">
         <div class="panel input-panel">
           <div class="panel-heading"><span class="section-number">01 / EXPERIMENT</span><span class="panel-kicker">YOUR SENTENCES</span></div>
-          <h2>Put meaning to the test<span class="heading-stop">.</span></h2>
-          <p class="panel-description">Write two English sentences, or start with an example. We’ll map both into the same semantic space.</p>
+          <h2>Give it a go!<span class="heading-stop">.</span></h2>
+          <p class="panel-description">Write two English sentences, or choose an example to start.</p>
           <form id="compareForm">
-            <div class="field-head"><label for="sentenceA"><span class="letter letter-a">A</span> First sentence</label><span id="countA" class="character-count">0 / 500</span></div>
-            <textarea id="sentenceA" maxlength="500" spellcheck="true" rows="4" placeholder="Enter the original sentence…" required>My experiences helped me become a more confident writer.</textarea>
-            <div class="field-head field-head-second"><label for="sentenceB"><span class="letter letter-b">B</span> Second sentence</label><span id="countB" class="character-count">0 / 500</span></div>
-            <textarea id="sentenceB" maxlength="500" spellcheck="true" rows="4" placeholder="Enter the revised sentence…" required>These experiences strengthened my confidence in writing.</textarea>
-            <div class="sample-block">
-              <span class="sample-title">OR TRY A PAIR</span>
-              <div class="sample-chips">
-                <button type="button" class="sample-chip active" data-pair="paraphrase">↗ Paraphrase</button>
-                <button type="button" class="sample-chip" data-pair="negation">↗ A subtle twist</button>
-                <button type="button" class="sample-chip" data-pair="topic">↗ Different topics</button>
-              </div>
-            </div>
-            <button class="primary-button" id="calculateBtn" type="submit"><span id="buttonText">Calculate similarity</span><span aria-hidden="true" class="button-icon">↗</span></button>
+            <div class="field-head"><label for="sentenceA"><span class="letter letter-a">A</span> Sentence A</label><span id="countA" class="character-count">0 / 500</span></div>
+            <textarea id="sentenceA" maxlength="500" spellcheck="true" rows="4" placeholder="Type the first sentence…" required>The weather is lovely today.</textarea>
+            <div class="field-head field-head-second"><label for="sentenceB"><span class="letter letter-b">B</span> Sentence B</label><span id="countB" class="character-count">0 / 500</span></div>
+            <textarea id="sentenceB" maxlength="500" spellcheck="true" rows="4" placeholder="Type the second sentence…" required>It&#39;s so sunny outside!</textarea>
+            <div class="sample-block"><details id="exampleMenu" class="example-menu"><summary class="example-toggle">✦ Try an example ▾</summary><div class="example-options" role="group" aria-label="Choose example sentences"><button type="button" data-pair="sunny">☀️ Sunny Day</button><button type="button" data-pair="cat">🐈 Cat &amp; Feline</button><button type="button" data-pair="pasta">🍝 Pasta &amp; Movies</button></div></details></div><button class="primary-button" id="calculateBtn" type="submit"><span id="buttonText">Calculate similarity</span><span aria-hidden="true" class="button-icon">↗</span></button>
           </form>
           <div class="model-status" role="status" aria-live="polite">
             <span class="status-orb" id="statusOrb"></span>
-            <div class="status-copy"><strong id="statusTitle">Model ready to download</strong><span id="statusDescription">Runs in your browser. First use downloads the model.</span></div>
+            <div class="status-copy"><strong id="statusTitle">Ready when you are!</strong><span id="statusDescription">The first calculation downloads a small model to your device.</span></div>
             <span class="status-tag" id="statusTag">WAITING</span>
           </div>
-          <div class="progress-track" id="progressTrack" hidden><div id="progressFill"></div></div>
-          <p class="privacy-note"><span aria-hidden="true">◎</span> Your sentences are processed on your device, not submitted to this website’s server.</p>
+          <div class="progress-track" id="progressTrack" hidden><div id="progressFill"></div></div><div id="machineLoader" class="mini-machine" aria-hidden="true" hidden><i></i><i></i><i></i><span>WORDS INTO NUMBERS</span></div>
+          <p class="privacy-note">🔒 Your sentences are processed on your device, not submitted to this website’s server.</p>
         </div>
 
         <div class="panel result-panel">
-          <div class="panel-heading"><span class="section-number">02 / OBSERVATION</span><span class="panel-kicker"><span class="tiny-circle"></span> LIVE RESULT</span></div>
-          <div class="score-top"><div><span class="score-overline">COSINE SIMILARITY</span><div class="score-wrap"><span id="scoreValue">—</span><span class="score-suffix">/ +1.00</span></div></div><span class="score-icon" aria-hidden="true">◎</span></div>
-          <p id="scoreInterpretation" class="interpretation" aria-live="polite">Your similarity score will appear here.</p>
+          <div class="panel-heading"><span class="section-number">02 / OBSERVATION</span><span class="panel-kicker"><span class="tiny-circle"></span> WHAT DOES THE MODEL SEE?</span></div>
+          <div class="score-top"><div><span class="score-overline">COSINE SIMILARITY</span><div class="score-wrap"><span id="scoreValue">—</span><span class="score-suffix">−1 to +1</span></div></div><span class="score-icon" aria-hidden="true">◎</span></div>
+          <p id="scoreInterpretation" class="interpretation" aria-live="polite">Your score will appear after you calculate.</p>
           <div class="scale"><div class="scale-track"><div class="scale-midline"></div><div class="scale-marker" id="scaleMarker" hidden></div></div><div class="scale-values"><span>−1.0</span><span>0.0</span><span>+1.0</span></div></div>
           <div class="viz-divider"></div>
-          <div class="visual-head"><span>VECTOR RELATIONSHIP</span><span id="angleText">ANGLE —</span></div>
+          <div class="visual-head"><span>THE VECTOR ANGLE</span><span id="angleText">ANGLE —</span></div>
           <svg id="vectorGraphic" class="vector-graphic" viewBox="0 0 440 274" role="img" aria-label="Geometric diagram of the two normalized sentence embeddings, drawn with their actual cosine angle.">
             <defs><linearGradient id="arrowA" x1="0" x2="1"><stop stop-color="#6deed5"/><stop offset="1" stop-color="#b5fff0"/></linearGradient><linearGradient id="arrowB" x1="0" x2="1"><stop stop-color="#e1a3ff"/><stop offset="1" stop-color="#d5a7ff"/></linearGradient>
-              <marker id="tipA" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#82f4df"/></marker>
-              <marker id="tipB" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#d7a6fc"/></marker>
+              <marker id="tipA" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#365ce6"/></marker>
+              <marker id="tipB" markerWidth="7" markerHeight="7" refX="6" refY="3" orient="auto"><path d="M0 0 L6 3 L0 6 Z" fill="#c35c38"/></marker>
             </defs>
             <g stroke="#304250" stroke-width="1" opacity=".6" fill="none"><circle cx="218" cy="137" r="39"/><circle cx="218" cy="137" r="78"/><circle cx="218" cy="137" r="115"/><path d="M36 137H402 M218 10V263" stroke-dasharray="3 6"/></g>
-            <g id="vectorLines" opacity=".25"><line x1="218" y1="137" x2="218" y2="22" stroke="#82f4df" stroke-width="3" marker-end="url(#tipA)"/><line x1="218" y1="137" x2="316" y2="77" stroke="#d7a6fc" stroke-width="3" marker-end="url(#tipB)"/></g>
+            <g id="vectorLines" opacity=".25"><line x1="218" y1="137" x2="218" y2="22" stroke="#365ce6" stroke-width="3" marker-end="url(#tipA)"/><line x1="218" y1="137" x2="316" y2="77" stroke="#f68a60" stroke-width="3" marker-end="url(#tipB)"/></g>
             <circle cx="218" cy="137" r="4" fill="#d4e2e4" />
             <g id="vectorLabels" opacity=".25"><text x="192" y="22" fill="#82f4df" font-size="13" font-family="DM Mono">A</text><text x="325" y="77" fill="#d7a6fc" font-size="13" font-family="DM Mono">B</text></g>
           </svg>
-          <div class="visual-foot"><span><i class="key-dot key-a"></i> SENTENCE A</span><span><i class="key-dot key-b"></i> SENTENCE B</span><span class="angle-hint">ANGLE IS EXACT*</span></div>
-          <div class="viz-divider second-divider"></div>
+          <div class="visual-foot"><span><i class="key-dot key-a"></i> SENTENCE A</span><span><i class="key-dot key-b"></i> SENTENCE B</span></div>
+          <p class="angle-caption">Each arrow represents a sentence. A smaller angle generally means a higher score. This angle is reconstructed from the real 384-dimensional vectors—not a 2D map.</p><p id="challengePrompt" class="challenge" hidden><strong>Did you expect that?</strong><span>Try changing just one word and see what happens!</span></p><details id="embeddingDetails" class="heat-toggle"><summary>Explore the numbers ▾</summary><div class="viz-divider second-divider"></div>
           <div class="visual-head heat-title"><span>THE 384-DIMENSION SIGNATURE</span><span>EMBEDDING MAP</span></div>
           <div class="heatmap-block"><span class="heat-label">A</span><canvas id="heatmapA" width="672" height="84" aria-label="384-dimensional heatmap of sentence A" role="img"></canvas></div>
           <div class="heatmap-block"><span class="heat-label heat-label-b">B</span><canvas id="heatmapB" width="672" height="84" aria-label="384-dimensional heatmap of sentence B" role="img"></canvas></div>
-          <div class="heatmap-foot"><span id="dimensionDetail">A fingerprint of 384 learned values for each sentence.</span><span class="heat-legend"><i></i> − <i></i> +</span></div>
+          <div class="heatmap-foot"><span id="dimensionDetail">The 384 learned numerical values for each sentence. Each square is not a separate interpretable meaning.</span><span class="heat-legend"><i></i> − <i></i> +</span></div></details>
         </div>
       </section>
 
-      <section class="science-section" id="the-science">
-        <div class="section-heading"><span class="section-number">03 / UNDER THE HOOD</span><h2>From language <em>to numbers.</em></h2></div>
-        <div class="explain-grid">
-          <article class="explain-card"><div class="card-graphic tokenize" aria-hidden="true"><span>“I think…”</span><span>→</span><span>[tokens]</span></div><span class="card-number">01</span><h3>Encode</h3><p>A sentence transformer reads each sentence and represents it as a vector of 384 numbers.</p></article>
-          <article class="explain-card"><div class="card-graphic bars" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><span class="card-number">02</span><h3>Compare</h3><p>Cosine similarity measures the angle between two vectors. Closer directions generally suggest greater semantic relatedness.</p></article>
-          <article class="explain-card"><div class="card-graphic careful" aria-hidden="true"><span>≈</span><span>≠</span></div><span class="card-number">03</span><h3>Interpret carefully</h3><p>A high score does not prove that the author’s stance, nuance, or factual meaning is unchanged—especially with negation.</p></article>
-        </div>
-        <div class="method-note"><strong>READ THIS LIKE A RESEARCHER.</strong><span>Scores are cosine values, not percentages or probabilities. The vectors are 384-dimensional; the diagram shows their mathematically exact angle, not a 2D projection. Browser inference uses a quantized ONNX version of the same pretrained model, so results may differ slightly from the original Python analysis. The dimensional stripes are not individually interpretable semantic features.</span></div>
-      </section>
+      <details class="science-section" id="the-science"><summary class="science-trigger"><span class="section-number">03 / HOW DOES THIS WORK?</span><strong>How does a computer compare meanings?</strong><b aria-hidden="true">+</b></summary>
+<div class="science-inside"><div class="science-grid">
+<article><div class="science-art">“Hello” → <i></i><i></i><i></i></div><h3>1. Turn words into numbers</h3><p>A model turns each sentence into a list of 384 numbers, called a <strong>sentence embedding</strong>.</p></article>
+<article><div class="science-art">↗ <span style="color:#f68a60">↗</span> ∠</div><h3>2. Compare patterns</h3><p>Think of each sentence as an arrow in a giant mathematical space. <strong>Cosine similarity</strong> compares their directions.</p></article>
+<article><div class="science-art">−1 ← 0 → +1</div><h3>3. Read the score carefully</h3><p>+1: same direction. 0: right angle. −1: opposite direction. These are vector relationships, not guaranteed relationships between meanings.</p></article>
+</div><p class="science-takeaway"><strong>The machine measures patterns, not perfect understanding.</strong> A score is neither a percentage nor a probability. Even similar sentences can differ in crucial ways; this browser runs quantized model weights.</p></div></details>
 
-      <section class="research-section" id="the-research">
-        <div class="research-title"><div><span class="section-number">04 / BEHIND THE POSTER</span><h2>The research that<br />started it all<span class="heading-stop">.</span></h2></div><span class="research-subhead">SEMANTIC SIMILARITY IN AI-ASSISTED L2 WRITING REVISION</span></div>
-        <p class="research-intro">What happens to a learner’s intended meaning when AI revises their writing? This experiment is inspired by a study comparing original and AI-revised English texts across <strong>three genres</strong> and <strong>four language models</strong> (ChatGPT, Gemini, DeepSeek, and Doubao).</p>
-        <div class="research-numbers"><div><strong>72</strong><span>STUDENT TEXTS</span></div><div><strong>03</strong><span>WRITING GENRES</span></div><div><strong>04</strong><span>LLM SYSTEMS</span></div><div><strong>7,483</strong><span>SEGMENT OBSERVATIONS</span></div></div>
-        <div class="findings"><div class="findings-heading"><span>MEAN COSINE SIMILARITY IN THE STUDY</span><span>BY GENRE · NOT LIVE INPUT</span></div>
-          <div class="finding"><span>Critiques</span><div class="finding-line"><span style="width:87.6%"></span></div><strong>0.876</strong></div>
-          <div class="finding"><span>Personal statements</span><div class="finding-line"><span style="width:83.7%"></span></div><strong>0.837</strong></div>
-          <div class="finding"><span>Argumentative essays</span><div class="finding-line"><span style="width:81.0%"></span></div><strong>0.810</strong></div>
-        </div>
-        <div class="research-footer"><div><span class="byline">AN INTERACTIVE POSTER COMPANION BY</span><strong>Xinyang Feng</strong><span>Cambridge Language Sciences Symposium · 2026</span></div><button id="shareBottom" class="secondary-button" type="button">Share this experiment <span>↗</span></button></div>
-      </section>
+      
     </main>
-    <footer class="footer"><span>MEANING LAB © 2026</span><span>Built for curious minds, not automatic judgments.</span><a href="#top">Back to top ↑</a></footer>
+    <footer class="footer"><span><strong>MEANING LAB</strong> · Created by <strong>Xinyang Feng</strong> · <a href="mailto:xf263@cam.ac.uk">xf263@cam.ac.uk</a></span><span>Powered by <a target="_blank" rel="noopener" href="https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2">all-MiniLM-L6-v2</a> (Sentence Transformers). Runs on your device via the <a target="_blank" rel="noopener" href="https://huggingface.co/Xenova/all-MiniLM-L6-v2">Xenova ONNX conversion</a> and Transformers.js.</span>
+<details class="references"><summary>References (APA 7) ▾</summary><ol>
+<li>Reimers, N., &amp; Gurevych, I. (2019). Sentence-BERT: Sentence embeddings using Siamese BERT-networks. In <em>Proceedings of the 2019 Conference on Empirical Methods in Natural Language Processing and the 9th International Joint Conference on Natural Language Processing</em> (pp. 3982–3992). Association for Computational Linguistics. <a href="https://doi.org/10.18653/v1/D19-1410">https://doi.org/10.18653/v1/D19-1410</a></li>
+<li>Wang, W., Wei, F., Dong, L., Bao, H., Yang, N., &amp; Zhou, M. (2020). MiniLM: Deep self-attention distillation for task-agnostic compression of pre-trained transformers. <em>Advances in Neural Information Processing Systems, 33</em>, 5776–5788. <a href="https://proceedings.neurips.cc/paper/2020/hash/3f5ee243547dee91fbd053c1c4a845aa-Abstract.html">NeurIPS paper</a>.</li>
+<li>Sentence Transformers. (n.d.). <em>all-MiniLM-L6-v2</em> [Machine learning model]. Hugging Face. <a href="https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2">Original model card</a>.</li>
+<li>Xenova. (n.d.). <em>all-MiniLM-L6-v2</em> [ONNX machine learning model]. Hugging Face. <a href="https://huggingface.co/Xenova/all-MiniLM-L6-v2">Browser model conversion</a>.</li>
+</ol><p>See also <a href="https://www.sbert.net/docs/quickstart.html">Sentence Transformers Quickstart</a>.</p></details>
+</footer>
   </div>
 
   <dialog id="shareDialog" class="share-dialog" aria-labelledby="shareHeading">
-    <form method="dialog"><button class="close-dialog" type="submit" aria-label="Close">×</button></form>
-    <span class="section-number">SCAN / EXPLORE</span><h2 id="shareHeading">Take the experiment<br />with you<span class="heading-stop">.</span></h2>
-    <p>Once this website is deployed, this QR code points directly to its public address. Add the downloaded QR image to your poster.</p>
-    <div class="qr-frame" id="qrFrame" aria-label="QR code of this page"></div>
-    <p id="qrNotice" class="qr-notice"></p>
-    <div class="share-url" id="pageURL"></div>
-    <div class="share-actions"><button id="copyURL" class="secondary-button" type="button">Copy link</button><button id="downloadQR" class="primary-button" type="button">Download poster QR ↓</button></div>
-  </dialog>
+<form method="dialog"><button class="close-dialog" type="submit" aria-label="Close sharing dialog">×</button></form>
+<span class="section-number">SHARE THE FUN</span><h2 id="shareHeading">Think you know what sentences mean?</h2>
+<p>Challenge a friend to try the Meaning Lab! Share the link or let them scan the QR code to give it a go.</p>
+<div class="qr-frame" id="qrFrame" aria-label="QR code linking to Meaning Lab"></div><p id="qrNotice" class="qr-notice"></p><div class="share-url" id="pageURL"></div>
+<div class="share-actions"><button id="copyURL" class="secondary-button" type="button">Copy link</button><button id="downloadQR" class="primary-button" type="button">Download QR ↓</button></div>
+</dialog>
   <script>
 /* QRCode library © 2009 Kazuhiko Arase, MIT License.
  * Original source: http://www.d-project.com/; vendored via qrcode-terminal.
