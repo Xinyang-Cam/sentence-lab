@@ -94,6 +94,19 @@ button:focus-visible,a:focus-visible,textarea:focus-visible,summary:focus-visibl
 @media(max-width:850px){.science-grid{grid-template-columns:1fr}.science-trigger{align-items:flex-start;flex-wrap:wrap}}
 @media(prefers-reduced-motion:reduce){.mini-machine i,.progress-track.indeterminate>div{animation:none!important}}
 
+.share-dialog{width:min(460px,calc(100vw - 34px));max-height:calc(100vh - 35px);overflow-y:auto;padding:22px;box-sizing:border-box}
+.share-dialog h2{font:800 25px/1.2 var(--display);letter-spacing:-.5px;margin:8px 27px 10px 0}
+.share-dialog p{font-size:12px;line-height:1.5}.close-dialog{position:absolute;right:12px;top:9px;font-size:24px;background:transparent;color:#24325a;border:0;cursor:pointer}
+.qr-frame{width:202px;height:202px;display:grid;place-items:center;margin:12px auto;padding:8px;border-radius:9px;border:2px solid #24325a;background:white}
+.qr-canvas{width:100%;height:100%;image-rendering:pixelated}.qr-notice{font-size:11px;text-align:center}
+.share-url{overflow-wrap:anywhere;padding:9px 11px;border:1px solid #b8c4d9;border-radius:8px;font-size:11px}
+.share-actions{display:flex;gap:10px;margin-top:11px}.share-actions>button{flex:1;justify-content:center;min-height:42px;font-size:12px;padding:9px}
+.footer{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:7px 20px;font-size:11px;line-height:1.5}
+.footer span{max-width:49%}.references{width:100%}
+.science-trigger{list-style:none}.science-trigger::-webkit-details-marker{display:none}
+@media(max-width:850px){.footer span{max-width:100%}.nav-share{font-size:11px}}
+@media(max-width:450px){.share-dialog{padding:16px}.share-actions{flex-wrap:wrap}.share-actions>button{min-width:130px}}
+
 </style>
 </head>
 <body>
@@ -104,7 +117,7 @@ button:focus-visible,a:focus-visible,textarea:focus-visible,summary:focus-visibl
     <header class="topbar">
       <a class="identity" href="#top" aria-label="Meaning Lab, home">
         <span class="brand-mark" aria-hidden="true"><span></span><span></span><span></span></span>
-        <span>SENTENCE<span class="logo-light">/LAB</span></span>
+        <span>MEANING<span class="logo-light"> LAB</span></span>
       </a>
       <nav class="topnav" aria-label="Sharing"><button class="nav-share" type="button" id="shareTop">Share Experiment ↗</button></nav>
     </header>
@@ -1550,8 +1563,8 @@ async function getExtractor() {
       const { pipeline, env } = await import(LIB);
       env.allowLocalModels = false;
       env.useBrowserCache = true;
-      // Quantized ONNX version of the original study's all-MiniLM-L6-v2 model.
-      // fp32 is more faithful but is ~90MB; q8 is ~23MB for conference mobile use.
+      // Quantized ONNX version of the sentence-transformers all-MiniLM-L6-v2 model.
+      // fp32 is more faithful but is ~90MB; q8 is ~23MB for responsive browser use.
       const model = await pipeline('feature-extraction', MODEL, {
         device: 'wasm', dtype: 'q8', progress_callback: progress,
       });
