@@ -138,12 +138,12 @@ button:focus-visible,a:focus-visible,textarea:focus-visible,summary:focus-visibl
             <textarea id="sentenceA" maxlength="500" spellcheck="true" rows="4" placeholder="Type the first sentence…" required>The weather is lovely today.</textarea>
             <div class="field-head field-head-second"><label for="sentenceB"><span class="letter letter-b">B</span> Sentence B</label><span id="countB" class="character-count">0 / 500</span></div>
             <textarea id="sentenceB" maxlength="500" spellcheck="true" rows="4" placeholder="Type the second sentence…" required>It&#39;s so sunny outside!</textarea>
-            <div class="sample-block"><details id="exampleMenu" class="example-menu"><summary class="example-toggle">✦ Try an example ▾</summary><div class="example-options" role="group" aria-label="Choose example sentences"><button type="button" data-pair="sunny">☀️ Sunny Day</button><button type="button" data-pair="cat">🐈 Cat &amp; Feline</button><button type="button" data-pair="pasta">🍝 Pasta &amp; Movies</button></div></details></div><button class="primary-button" id="calculateBtn" type="submit"><span id="buttonText">Calculate similarity</span><span aria-hidden="true" class="button-icon">↗</span></button>
+            <div class="sample-block"><details id="exampleMenu" class="example-menu"><summary class="example-toggle">✦ Try an example ▾</summary><div class="example-options" role="group" aria-label="Choose example sentences"><button type="button" data-pair="sunny">☀️ Sunny Day</button><button type="button" data-pair="cat">🐈 Cat &amp; Feline</button><button type="button" data-pair="pasta">🍝 Pasta &amp; Movies</button></div></details></div><button class="primary-button" id="calculateBtn" type="submit"><span id="buttonText">Calculate similarity</span><span aria-hidden="true" class="button-icon">→</span></button>
           </form>
           <div class="model-status" role="status" aria-live="polite">
             <span class="status-orb" id="statusOrb"></span>
             <div class="status-copy"><strong id="statusTitle">Ready when you are!</strong><span id="statusDescription">The first calculation downloads a small model to your device.</span></div>
-            <span class="status-tag" id="statusTag">WAITING</span>
+            <span class="status-tag" id="statusTag">READY TO TRY</span>
           </div>
           <div class="progress-track" id="progressTrack" hidden><div id="progressFill"></div></div><div id="machineLoader" class="mini-machine" aria-hidden="true" hidden><i></i><i></i><i></i><span>WORDS INTO NUMBERS</span></div>
           <p class="privacy-note">🔒 Your sentences are processed on your device, not submitted to this website’s server.</p>
@@ -180,7 +180,7 @@ button:focus-visible,a:focus-visible,textarea:focus-visible,summary:focus-visibl
 <article><div class="science-art">“Hello” → <i></i><i></i><i></i></div><h3>1. Turn words into numbers</h3><p>A model turns each sentence into a list of 384 numbers, called a <strong>sentence embedding</strong>.</p></article>
 <article><div class="science-art">↗ <span style="color:#f68a60">↗</span> ∠</div><h3>2. Compare patterns</h3><p>Think of each sentence as an arrow in a giant mathematical space. <strong>Cosine similarity</strong> compares their directions.</p></article>
 <article><div class="science-art">−1 ← 0 → +1</div><h3>3. Read the score carefully</h3><p>+1: same direction. 0: right angle. −1: opposite direction. These are vector relationships, not guaranteed relationships between meanings.</p></article>
-</div><p class="science-takeaway"><strong>The machine measures patterns, not perfect understanding.</strong> A score is neither a percentage nor a probability. Even similar sentences can differ in crucial ways; this browser runs quantized model weights.</p></div></details>
+</div><p class="science-takeaway"><strong>The machine measures patterns, not perfect understanding.</strong> A score is neither a percentage nor a probability. Terms such as “strong” are informal guides, not universally validated cut-offs. Even similar sentences can differ in crucial ways; this browser runs quantized model weights.</p></div></details>
 
       
     </main>
