@@ -155,6 +155,27 @@ textarea:focus{outline:2px solid #c1cdff;border-color:var(--blue)}
 .sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
 @media(max-width:800px){.science-section{padding:19px 18px}.science-grid{grid-template-columns:1fr;gap:25px}.science-illustration{height:100px;max-width:410px}.science-card h3{margin-top:9px}}
 @media(min-width:801px) and (max-width:1020px){.science-grid{gap:16px}.science-section{padding:20px}.science-card h3{font-size:12.5px}}
+
+/* Explore More: a clear next step without adding an embedded 3D app */
+.explore-section{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);column-gap:32px;row-gap:16px;align-items:start;background:var(--card);border:1px solid #e5e3dc;border-radius:10px;padding:24px;margin:0 0 17px}
+.explore-heading{min-width:0}
+.explore-heading .eyebrow{margin:0 0 6px}
+.explore-heading h2{font-size:20px;line-height:1.32;letter-spacing:-.4px;margin:0 0 13px}
+.explore-heading p{font-size:13px;line-height:1.65;margin:0 0 9px;color:var(--text)}
+.explore-heading strong{font-weight:650;color:var(--ink)}
+.explore-button{min-height:44px;margin-top:12px;display:inline-flex;align-items:center;justify-content:center;gap:14px;max-width:100%;padding:11px 15px;border-radius:8px;background:var(--blue);color:white;text-decoration:none;font-size:13px;font-weight:650;transition:background .15s}
+.explore-button:hover{background:#2849d1;text-decoration:none}
+.explore-button span:last-child{font-size:17px;line-height:1}
+.explore-challenge{background:#f6f8ff;border:1px solid #e1e7fa;border-radius:9px;padding:17px 18px}
+.explore-challenge-label{font-size:10px;color:var(--blue);font-weight:700;letter-spacing:.85px;margin-bottom:9px}
+.explore-challenge h3{font-size:15px;line-height:1.45;letter-spacing:-.2px;margin:0 0 9px}
+.explore-challenge p{font-size:12.5px;line-height:1.66;color:var(--text);margin:0}
+.explore-challenge em{font-weight:600;color:var(--ink)}
+.explore-challenge .explore-challenge-end{font-size:11.5px;color:var(--muted);margin-top:10px}
+.explore-footnote{grid-column:1 / -1;border-top:1px solid var(--line);padding-top:12px;margin:0;color:var(--muted);font-size:11.5px;line-height:1.6}
+.explore-footnote strong{color:var(--text);font-weight:650}
+@media(max-width:800px){.explore-section{grid-template-columns:1fr;gap:16px;padding:19px 18px}.explore-footnote{grid-column:1}.explore-button{width:100%;justify-content:space-between}.explore-challenge{padding:15px}}
+@media(prefers-reduced-motion:reduce){.explore-button{transition:none}}
 </style>
 </head>
 <body>
@@ -305,6 +326,25 @@ textarea:focus{outline:2px solid #c1cdff;border-color:var(--blue)}
           </article>
         </div>
         <p class="science-diagram-note">Illustrations simplify the ideas. The live score, vectors and heatmap above are calculated from your own sentences.</p>
+      </section>
+      <section class="explore-section" id="explore-more" aria-labelledby="exploreTitle">
+        <div class="explore-heading">
+          <span class="eyebrow">04 / EXPLORE MORE</span>
+          <h2 id="exploreTitle">Want to explore a whole world of words?</h2>
+          <p>So far, you’ve compared two sentences. But what if you could explore thousands of words in a 3D space?</p>
+          <p>Google’s <strong>Embedding Projector</strong> lets you see words as points, discover which ones are close together, and explore the patterns yourself.</p>
+          <a class="explore-button" href="https://projector.tensorflow.org/" target="_blank" rel="noopener noreferrer">
+            <span>Explore Google’s Embedding Projector</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+        </div>
+        <aside class="explore-challenge" aria-labelledby="challengeTitle">
+          <div class="explore-challenge-label">A LITTLE CHALLENGE</div>
+          <h3 id="challengeTitle">What comes to mind when you see “orange”?</h3>
+          <p>Open the projector, select <strong>Word2Vec 10K</strong>, and search for <em>orange</em>. Which words appear nearby? Are they related to colours, fruit, or something else?</p>
+          <p class="explore-challenge-end">There’s no need to guess correctly. See what surprises you.</p>
+        </aside>
+        <p class="explore-footnote">Google’s example explores <strong>word embeddings</strong>. Meaning Lab compares <strong>sentence embeddings</strong>. The two tools use different models, so their results are not directly comparable.</p>
       </section>
     </main>
     <footer class="footer">
